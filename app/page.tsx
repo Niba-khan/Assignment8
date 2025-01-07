@@ -1,9 +1,6 @@
-import BlogCard from "@/components/BlogCard";
-import Image from "next/image";
-import { client } from "../../sanity/lib/client";
 
-export const revalidate = 60; //seconds
-
+import BlogCard from "@/components/blogcard";
+import { client } from "../sanity/lib/client"
 export default async function Home() {
   const query = `*[_type=='post'] | order(_createdAt asc){
   

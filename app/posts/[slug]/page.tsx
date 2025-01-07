@@ -3,20 +3,17 @@ import { client } from "../../../sanity/lib/client"
 import { urlForImage } from "../../../sanity/lib/image"
 import { PortableText } from "@portabletext/react";
 
-export const revalidate = 60; // Revalidate every 60 seconds
+export const revalidate = 60; 
 
-// Generate static paths for blog posts
 export async function generateStaticParams() {
   const query = `*[_type == 'post']{ "slug": slug.current }`;
   const slugs = await client.fetch(query);
   return slugs.map((item: { slug: string }) => ({ slug: item.slug }));
 }
 
-// Blog post page component
 export default async function BlogPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  // Fetch the blog post data
   const query = `*[_type == 'post' && slug.current == $slug]{
     title, summary, image, content,
     author->{bio, image, name}
@@ -29,12 +26,12 @@ export default async function BlogPage({ params }: { params: { slug: string } })
 
   return (
     <article className="mt-12 mb-24 px-4 flex flex-col gap-y-8">
-      {/* Blog Title */}
+
       <h1 className="text-3xl lg:text-5xl font-bold text-dark dark:text-light">
         {post.title}
       </h1>
 
-      {/* Featured Image */}
+
       <Image
         src={urlForImage(post.image)}
         width={800}
@@ -51,7 +48,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
         </p>
       </section>
 
-      {/* Author Section */}
+ 
       <section className="flex gap-4 items-center">
         <Image
           src={urlForImage(post.author.image)}
@@ -66,7 +63,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
         </div>
       </section>
 
-      {/* Blog Content */}
+    
       <section className="prose dark:prose-invert">
         <PortableText value={post.content} />
       </section>
